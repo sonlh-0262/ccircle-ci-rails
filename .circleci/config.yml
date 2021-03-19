@@ -1,0 +1,50 @@
+version: 2.1
+
+references:
+  ruby_envs: &ruby_envs
+    environment:
+      DATABASE_HOSTNAME: 127.0.0.1
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: root
+      BUNDLER_VERSION: 2.1.4
+      RAILS_ENV: test
+  mysql_envs: &mysql_envs
+    environment:
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+jobs:
+  test_rspec:
+    docker:
+      - image: hungsonsn/nginx-basic:1.2
+        <<: *ruby_envs
+      - image: mysql:5.7.33
+        <<: *mysql_envs
+    steps:
+      - checkout
+      - run:
+          name: which bundler?
+          command: bundle -v 
+      - run:
+          name: Bundle Install 
+          command: bundle check || bundle install --jobs=4 --retry=3
+      - run:
+          name: Build assets
+          command: bundle exec rails assets:precompile
+      - run:
+          name: Database setup
+          command: RAILS_ENV=test bundle exec rails db:drop db:create 
+      - run:
+          name: Run Migrate 
+          command: RAILS_ENV=test bundle exec rails db:migrate 
+      # - run:
+      #     name: Rubocop test 
+      #     command: bundle exec rubocop 
+      - run:
+          name: Rspec test 
+          command: bundle exec rspec spec/ 
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test_rspec
