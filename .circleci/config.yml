@@ -18,6 +18,9 @@ jobs:
     docker:
       - image: hungsonsn/nginx-basic:1.2
         <<: *ruby_envs
+        auth:
+          username: hungsonsn
+          password: nhoxsaysaysay91
       - image: mysql:5.7.33
         <<: *mysql_envs
     steps:
