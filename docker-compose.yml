@@ -12,12 +12,19 @@ services:
     networks:
       - internal 
   web:
-    image: sonsn/circel-ci-rails:1.1
+    build: .
     env_file: 
       - .env
     volumes:
       - .:/app
       - bundle_cache:/usr/local/bundle
+    command: 
+      - bundle
+      - exec
+      - rails 
+      - s 
+      - -b
+      - 0.0.0.0      
     ports:
       - 3000:3000
     depends_on: 
