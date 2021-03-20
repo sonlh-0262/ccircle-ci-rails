@@ -3,31 +3,36 @@ version: '3'
 services:
   db:
     image: mysql:5.7.33
-    env_file: 
-      - .env 
-    environment: 
+    env_file:
+      - .env
+    environment:
       - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD}
     volumes:
       - mysql_cache:/var/lib/mysql
     networks:
-      - internal 
+      - internal
   web:
-    build: .
-    env_file: 
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - gid=${GID}
+        - uid=${UID}
+    env_file:
       - .env
     volumes:
-      - .:/app
+      - .:/home/userapp/app
       - bundle_cache:/usr/local/bundle
-    command: 
+    command:
       - bundle
       - exec
-      - rails 
-      - s 
+      - rails
+      - s
       - -b
-      - 0.0.0.0      
+      - 0.0.0.0
     ports:
       - 3000:3000
-    depends_on: 
+    depends_on:
       - db
     networks:
       - internal
@@ -38,6 +43,5 @@ volumes:
   mysql_cache:
   bundle_cache:
 networks:
-  internal: 
+  internal:
     driver: bridge
-  

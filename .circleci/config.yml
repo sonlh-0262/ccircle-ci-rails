@@ -19,33 +19,33 @@ jobs:
       - image: hungsonsn/nginx-basic:1.2
         <<: *ruby_envs
         auth:
-          username: hungsonsn
-          password: nhoxsaysaysay91
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
       - image: mysql:5.7.33
         <<: *mysql_envs
     steps:
       - checkout
       - run:
           name: which bundler?
-          command: bundle -v 
+          command: bundle -v
       - run:
-          name: Bundle Install 
+          name: Bundle Install
           command: bundle check || bundle install --jobs=4 --retry=3
       - run:
           name: Build assets
           command: bundle exec rails assets:precompile
       - run:
           name: Database setup
-          command: RAILS_ENV=test bundle exec rails db:drop db:create 
+          command: RAILS_ENV=test bundle exec rails db:drop db:create
       - run:
-          name: Run Migrate 
-          command: RAILS_ENV=test bundle exec rails db:migrate 
-      # - run:
-      #     name: Rubocop test 
-      #     command: bundle exec rubocop 
+          name: Run Migrate
+          command: RAILS_ENV=test bundle exec rails db:migrate
       - run:
-          name: Rspec test 
-          command: bundle exec rspec spec/ 
+          name: Rubocop test
+          command: bundle exec rubocop
+      - run:
+          name: Rspec test
+          command: bundle exec rspec spec/
 workflows:
   version: 2
   test:

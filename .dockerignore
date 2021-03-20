@@ -1,0 +1,7 @@
+node_modules/
+.git
+log/
+public/assets/
+public/packs/
+tmp/cache/
+.env
