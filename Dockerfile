@@ -17,14 +17,13 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* 
 RUN echo 'root:root' | chpasswd
 RUN mkdir /home/userapp
-RUN mkdir /app 
-WORKDIR /app  
-COPY . /app
+RUN mkdir /home/userapp/app 
+WORKDIR /home/userapp/app  
+COPY . /home/userapp/app
 
 RUN groupadd -g 319816193 groupapp
 RUN useradd -l -u 319818008 -g 319816193 userapp 
 RUN chown -R userapp:groupapp /home/userapp
-RUN chown -R userapp:groupapp /app
 USER userapp
 
 RUN gem install bundler -v 2.1.4
