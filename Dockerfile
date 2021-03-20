@@ -1,4 +1,7 @@
-FROM ruby:2.6.6-slim-buster 
+FROM ruby:2.6.6-slim-buster
+
+ARG gid
+ARG uid
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends curl apt-transport-https build-essential && \
@@ -14,24 +17,21 @@ RUN apt-get update && \
     vim \
     default-libmysqlclient-dev \
     && \
-    rm -rf /var/lib/apt/lists/* 
+    rm -rf /var/lib/apt/lists/*
 RUN echo 'root:root' | chpasswd
+EXPOSE 3000
 RUN mkdir /home/userapp
-RUN mkdir /home/userapp/app 
-WORKDIR /home/userapp/app  
+RUN mkdir /home/userapp/app
+WORKDIR /home/userapp/app
 COPY . /home/userapp/app
 
-RUN groupadd -g 319816193 groupapp
-RUN useradd -l -u 319818008 -g 319816193 userapp 
+RUN groupadd -g ${gid} groupapp
+RUN useradd -l -u ${uid} -g ${gid} userapp
 RUN chown -R userapp:groupapp /home/userapp
 USER userapp
 
 RUN gem install bundler -v 2.1.4
 
-# COPY entrypoint.sh /usr/bin/ 
-# RUN chmod +x /usr/bin/entrypoint.sh
-# ENTRYPOINT ["entrypoint.sh"]
-
-EXPOSE 3000
+# RUN chmod +x entrypoint.sh
+# ENTRYPOINT ["./entrypoint.sh"]
 RUN bundle install
-  

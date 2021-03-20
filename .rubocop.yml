@@ -1,0 +1,12 @@
+AllCops:
+  Exclude:
+    - 'bin/*'
+    - 'db/migrate/*'
+    - 'node_modules/**/*'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Layout/TrailingWhitespace:
+  AllowInHeredoc: true
+Style/Documentation:
+  Enabled: false
