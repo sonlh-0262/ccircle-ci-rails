@@ -1,7 +1,7 @@
 FROM ruby:2.6.6-slim-buster
 
-ARG gid
-ARG uid
+ARG gid=1000
+ARG uid=1000
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends curl apt-transport-https build-essential && \
