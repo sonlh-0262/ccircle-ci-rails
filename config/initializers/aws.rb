@@ -5,4 +5,3 @@ Aws::Rails.add_action_mailer_delivery_method(
   credentials: creds,
   region: 'us-east-1'
 )
-
