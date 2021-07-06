@@ -1,7 +1,8 @@
-creds = Aws::Credentials.new(ENV['AWS_ACCESS_KEY_ID'], ENV['AWS_SECRET_ACCESS_KEY'])
+require "aws-sdk-s3"
 
-Aws::Rails.add_action_mailer_delivery_method(
-  :ses,
-  credentials: creds,
-  region: 'us-east-1'
+S3_CLIENT = Aws::S3::Client.new(
+  region: ENV["AWS_REGION"]
 )
+
+S3_RESOURCE = Aws::S3::Resource.new client: S3_CLIENT
+S3_BUCKET = S3_RESOURCE.bucket ENV["BUCKET_NAME"]
