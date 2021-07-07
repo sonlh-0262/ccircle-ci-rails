@@ -56,6 +56,8 @@ group :test do
   gem 'webdrivers'
 end
 
+gem 'dotenv-rails', group: [:development, :test]
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'aws-sdk-rails', '~> 3'
 gem 'aws-sdk-s3', '~> 1'
